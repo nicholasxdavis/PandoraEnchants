@@ -1,0 +1,1482 @@
+# ============================================
+# PandoraEnchants - Enchantments Configuration
+# ============================================
+# 
+# This file defines all custom enchantments.
+# Each enchant must follow the structure below.
+#
+# ONE ENCHANT PER ITEM RULE:
+# - The plugin enforces that each item can only have ONE custom enchant
+# - Attempting to add a second enchant will be blocked or replace the first
+# - This keeps gameplay balanced and prevents power creep
+#
+# ============================================
+# ENCHANTMENT STRUCTURE:
+# ============================================
+#
+# enchant_name:
+#   enabled: true/false                    # Whether this enchant is enabled
+#   display_name: "Custom Name"            # Optional: Custom display name (defaults to formatted name)
+#   description: "What this enchant does"  # Optional: Description shown in /pe info
+#   definition:
+#     max_level: 1                         # Maximum level (1-10)
+#     needs_permission: false              # Require permission to use
+#     anvil_cost: 10                       # XP cost for anvil operations
+#     conflicts_with: []                   # Other enchant names that conflict
+#     supported:                           # Item types that can have this enchant
+#       - armor_torso
+#       - weapon
+#     primary:                             # Primary items (higher priority in table)
+#       - armor_torso
+#     tags:
+#       in_enchanting_table: true          # Can appear in enchant table
+#       treasure: false                    # Is a treasure enchant
+#       tradeable: true                    # Can be traded
+#       cursed: false                      # Is a curse
+#     enchanting_table:
+#       weight: 20                         # Weight for rarity (lower = rarer)
+#       min_cost_base: 5                   # Minimum enchant cost base
+#       min_cost_incr: 10                  # Minimum cost increase per level
+#       max_cost_base: 15                  # Maximum enchant cost base
+#       max_cost_incr: 15                  # Maximum cost increase per level
+#     destroy_item_chance: 0.0             # Chance to destroy item (0.0-1.0)
+#     remove_enchantment_chance: 0.0       # Chance to remove enchant (0.0-1.0)
+#   triggers:                              # Event triggers (for future trigger system)
+#     # Trigger definitions would go here
+#
+# ============================================
+# ITEM TYPE REFERENCE:
+# ============================================
+# - weapon           (swords, axes)
+# - armor_torso      (chestplates)
+# - armor_legs       (leggings)
+# - armor_feet       (boots)
+# - armor_head       (helmets)
+# - tool             (pickaxes, shovels, hoes)
+# - bow              (bows)
+# - crossbow         (crossbows)
+# - trident          (tridents)
+# - fishing_rod      (fishing rods)
+#
+# ============================================
+# WEIGHT GUIDE (BALANCED):
+# ============================================
+# - 1-5:    Legendary (extremely rare - treasure only)
+# - 6-12:   Epic (very rare)
+# - 13-25:  Rare (uncommon)
+# - 35-55:  Uncommon (appears more often)
+# - 60+:    Common (frequent)
+#
+# ============================================
+
+# ============================================
+# ARMOR ENCHANTS (15)
+# ============================================
+
+shield:
+  enabled: true
+  display_name: "&7Shield"
+  description: "&7Provides additional protection when taking damage"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 10
+    conflicts_with: []
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 15
+      min_cost_base: 5
+      min_cost_incr: 10
+      max_cost_base: 15
+      max_cost_incr: 15
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+tank:
+  enabled: true
+  display_name: "&7Tank"
+  description: "&7Increases your maximum health and damage reduction"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 15
+    conflicts_with: []
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 12
+      min_cost_base: 8
+      min_cost_incr: 12
+      max_cost_base: 20
+      max_cost_incr: 18
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+drunk:
+  enabled: true
+  display_name: "&7Drunk"
+  description: "&7Gives random effects and makes you harder to hit"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with:
+      - clarity
+    supported:
+      - armor_head
+    primary:
+      - armor_head
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 10
+      min_cost_incr: 15
+      max_cost_base: 25
+      max_cost_incr: 20
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+clarity:
+  enabled: true
+  display_name: "&7Clarity"
+  description: "&7Removes negative effects and improves vision"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 10
+    conflicts_with:
+      - drunk
+    supported:
+      - armor_head
+    primary:
+      - armor_head
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 10
+      min_cost_base: 5
+      min_cost_incr: 10
+      max_cost_base: 15
+      max_cost_incr: 15
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+gears:
+  enabled: true
+  display_name: "&7Gears"
+  description: "&7Increases movement speed and mining speed"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 8
+    conflicts_with: []
+    supported:
+      - armor_legs
+      - tool
+    primary:
+      - armor_legs
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 10
+      min_cost_base: 3
+      min_cost_incr: 8
+      max_cost_base: 12
+      max_cost_incr: 12
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+immortal:
+  enabled: true
+  display_name: "&6&lImmortal"
+  description: "&7Grants near-invincibility when health is low"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 30
+    conflicts_with:
+      - shield
+      - tank
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 20
+      min_cost_incr: 20
+      max_cost_base: 40
+      max_cost_incr: 30
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+night_vision:
+  enabled: true
+  display_name: "&7Night Vision"
+  description: "&7Grants permanent night vision"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 8
+    conflicts_with: []
+    supported:
+      - armor_head
+    primary:
+      - armor_head
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 12
+      min_cost_base: 5
+      min_cost_incr: 8
+      max_cost_base: 12
+      max_cost_incr: 12
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+water_walker:
+  enabled: true
+  display_name: "&7Water Walker"
+  description: "&7Walk on water and avoid drowning"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with: []
+    supported:
+      - armor_feet
+    primary:
+      - armor_feet
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 10
+      min_cost_incr: 12
+      max_cost_base: 20
+      max_cost_incr: 18
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+auto_feed:
+  enabled: true
+  display_name: "&7Auto Feed"
+  description: "&7Automatically eats food when hungry"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 10
+    conflicts_with: []
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 18
+      min_cost_base: 6
+      min_cost_incr: 10
+      max_cost_base: 15
+      max_cost_incr: 15
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+regeneration:
+  enabled: true
+  display_name: "&7Regeneration"
+  description: "&7Slowly regenerates health over time"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 18
+    conflicts_with: []
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 12
+      min_cost_incr: 15
+      max_cost_base: 25
+      max_cost_incr: 22
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+reflex:
+  enabled: true
+  display_name: "&7Reflex"
+  description: "&7Increases dodge chance and movement speed"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with: []
+    supported:
+      - armor_legs
+    primary:
+      - armor_legs
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 10
+      min_cost_base: 8
+      min_cost_incr: 10
+      max_cost_base: 18
+      max_cost_incr: 16
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+absorption:
+  enabled: true
+  display_name: "&7Absorption"
+  description: "&7Grants extra absorption hearts"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 15
+    conflicts_with: []
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 10
+      min_cost_incr: 12
+      max_cost_base: 22
+      max_cost_incr: 20
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+thorns:
+  enabled: true
+  display_name: "&7Thorns"
+  description: "&7Damages attackers when hit"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with: []
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 16
+      min_cost_base: 8
+      min_cost_incr: 10
+      max_cost_base: 18
+      max_cost_incr: 16
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+fire_resistance:
+  enabled: true
+  display_name: "&7Fire Resistance"
+  description: "&7Grants immunity to fire and lava"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 14
+    conflicts_with: []
+    supported:
+      - armor_torso
+    primary:
+      - armor_torso
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 12
+      min_cost_incr: 14
+      max_cost_base: 24
+      max_cost_incr: 20
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+feather_fall:
+  enabled: true
+  display_name: "&7Feather Fall"
+  description: "&7Reduces fall damage significantly"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 10
+    conflicts_with: []
+    supported:
+      - armor_feet
+    primary:
+      - armor_feet
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 12
+      min_cost_base: 4
+      min_cost_incr: 8
+      max_cost_base: 12
+      max_cost_incr: 12
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+double_jump:
+  enabled: true
+  display_name: "&7Double Jump"
+  description: "&7Allows you to jump again while in the air"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 18
+    conflicts_with:
+      - feather_fall
+    supported:
+      - armor_feet
+    primary:
+      - armor_feet
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 12
+      min_cost_incr: 15
+      max_cost_base: 25
+      max_cost_incr: 22
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+# ============================================
+# WEAPON ENCHANTS (15)
+# ============================================
+
+lifesteal:
+  enabled: true
+  display_name: "&7Lifesteal"
+  description: "&7Heals you when you damage enemies"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 15
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 12
+      min_cost_incr: 14
+      max_cost_base: 26
+      max_cost_incr: 24
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+execute:
+  enabled: true
+  display_name: "&7Execute"
+  description: "&7Deals extra damage to low health enemies"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 14
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 12
+      min_cost_incr: 14
+      max_cost_base: 26
+      max_cost_incr: 24
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+venom:
+  enabled: true
+  display_name: "&7Venom"
+  description: "&7Poisons enemies on hit"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 10
+      min_cost_incr: 12
+      max_cost_base: 22
+      max_cost_incr: 20
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+cleave:
+  enabled: true
+  display_name: "&7Cleave"
+  description: "&7Damages multiple enemies in an area"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 16
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 14
+      min_cost_incr: 16
+      max_cost_base: 28
+      max_cost_incr: 26
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+rage:
+  enabled: true
+  display_name: "&7Rage"
+  description: "&7Increases damage as health decreases"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 15
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 14
+      min_cost_incr: 16
+      max_cost_base: 28
+      max_cost_incr: 26
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+bleed:
+  enabled: true
+  display_name: "&7Bleed"
+  description: "&7Causes enemies to take damage over time"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 13
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 11
+      min_cost_incr: 13
+      max_cost_base: 24
+      max_cost_incr: 22
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+execute_plus:
+  enabled: true
+  display_name: "&6Execute+"
+  description: "&7Extreme damage boost against low health enemies"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 25
+    conflicts_with:
+      - execute
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 20
+      min_cost_incr: 20
+      max_cost_base: 40
+      max_cost_incr: 30
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+critical:
+  enabled: true
+  display_name: "&7Critical"
+  description: "&7Chance to deal massive critical damage"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 14
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 10
+      min_cost_incr: 12
+      max_cost_base: 22
+      max_cost_incr: 20
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+disarm:
+  enabled: true
+  display_name: "&7Disarm"
+  description: "&7Chance to knock weapon from enemy's hand"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 16
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 14
+      min_cost_incr: 16
+      max_cost_base: 28
+      max_cost_incr: 26
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+wither:
+  enabled: true
+  display_name: "&7Wither"
+  description: "&7Applies wither effect to enemies"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 14
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 12
+      min_cost_incr: 14
+      max_cost_base: 24
+      max_cost_incr: 22
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+lightning:
+  enabled: true
+  display_name: "&7Lightning"
+  description: "&7Strikes enemies with lightning on hit"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 20
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 18
+      min_cost_incr: 18
+      max_cost_base: 36
+      max_cost_incr: 28
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+leech:
+  enabled: true
+  display_name: "&7Leech"
+  description: "&7Steals enemy health and gives it to you"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 17
+    conflicts_with:
+      - lifesteal
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 15
+      min_cost_incr: 17
+      max_cost_base: 30
+      max_cost_incr: 28
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+freeze:
+  enabled: true
+  display_name: "&7Freeze"
+  description: "&7Temporarily stuns enemies on hit"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 13
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 12
+      min_cost_base: 8
+      min_cost_incr: 10
+      max_cost_base: 18
+      max_cost_incr: 16
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+vampire:
+  enabled: true
+  display_name: "&6Vampire"
+  description: "&7Extreme lifesteal that scales with damage"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 28
+    conflicts_with:
+      - lifesteal
+      - leech
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 24
+      min_cost_incr: 24
+      max_cost_base: 48
+      max_cost_incr: 36
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+soul_siphon:
+  enabled: true
+  display_name: "&6Soul Siphon"
+  description: "&7Killing enemies restores health and gives effects"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 22
+    conflicts_with: []
+    supported:
+      - weapon
+    primary:
+      - weapon
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 20
+      min_cost_incr: 20
+      max_cost_base: 40
+      max_cost_incr: 30
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+# ============================================
+# TOOL ENCHANTS (10)
+# ============================================
+
+vein_miner:
+  enabled: true
+  display_name: "&7Vein Miner"
+  description: "&7Breaks connected blocks of the same type"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 15
+      min_cost_base: 6
+      min_cost_incr: 9
+      max_cost_base: 15
+      max_cost_incr: 14
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+autosmelt:
+  enabled: true
+  display_name: "&7Auto Smelt"
+  description: "&7Automatically smelts mined ores"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 10
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 18
+      min_cost_base: 5
+      min_cost_incr: 8
+      max_cost_base: 13
+      max_cost_incr: 13
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+experience:
+  enabled: true
+  display_name: "&7Experience"
+  description: "&7Grants bonus experience from mining"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 10
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 12
+      min_cost_base: 3
+      min_cost_incr: 7
+      max_cost_base: 10
+      max_cost_incr: 11
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+lumberjack:
+  enabled: true
+  display_name: "&7Lumberjack"
+  description: "&7Breaks entire trees at once"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 18
+      min_cost_base: 8
+      min_cost_incr: 10
+      max_cost_base: 18
+      max_cost_incr: 16
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+magnet:
+  enabled: true
+  display_name: "&7Magnet"
+  description: "&7Automatically picks up nearby items"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 11
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 13
+      min_cost_base: 7
+      min_cost_incr: 9
+      max_cost_base: 16
+      max_cost_incr: 15
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+telekinesis:
+  enabled: true
+  display_name: "&7Telekinesis"
+  description: "&7Items go directly to your inventory"
+  definition:
+    max_level: 1
+    needs_permission: false
+    anvil_cost: 9
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 15
+      min_cost_base: 4
+      min_cost_incr: 7
+      max_cost_base: 11
+      max_cost_incr: 12
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+tunnel:
+  enabled: true
+  display_name: "&7Tunnel"
+  description: "&7Mines blocks in a straight line"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 13
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 16
+      min_cost_base: 9
+      min_cost_incr: 11
+      max_cost_base: 20
+      max_cost_incr: 18
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+fortune_plus:
+  enabled: true
+  display_name: "&6Fortune+"
+  description: "&7Extreme bonus to block drops"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 20
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 18
+      min_cost_incr: 18
+      max_cost_base: 36
+      max_cost_incr: 28
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+jackhammer:
+  enabled: true
+  display_name: "&7Jackhammer"
+  description: "&7Mines a 3x3 area at once"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 15
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 13
+      min_cost_incr: 15
+      max_cost_base: 28
+      max_cost_incr: 26
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+efficiency_plus:
+  enabled: true
+  display_name: "&6Efficiency+"
+  description: "&7Extreme mining speed boost"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 14
+    conflicts_with: []
+    supported:
+      - tool
+    primary:
+      - tool
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 10
+      min_cost_base: 4
+      min_cost_incr: 8
+      max_cost_base: 12
+      max_cost_incr: 12
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+# ============================================
+# BOW/CROSSBOW ENCHANTS (5)
+# ============================================
+
+explosive:
+  enabled: true
+  display_name: "&7Explosive"
+  description: "&7Arrows explode on impact"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 16
+    conflicts_with: []
+    supported:
+      - bow
+      - crossbow
+    primary:
+      - bow
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 14
+      min_cost_incr: 16
+      max_cost_base: 28
+      max_cost_incr: 26
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+pierce:
+  enabled: true
+  display_name: "&7Pierce"
+  description: "&7Arrows pass through multiple enemies"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 13
+    conflicts_with: []
+    supported:
+      - bow
+      - crossbow
+    primary:
+      - bow
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 9
+      min_cost_incr: 11
+      max_cost_base: 20
+      max_cost_incr: 18
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+homing:
+  enabled: true
+  display_name: "&7Homing"
+  description: "&7Arrows track and home in on targets"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 18
+    conflicts_with: []
+    supported:
+      - bow
+      - crossbow
+    primary:
+      - bow
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 16
+      min_cost_incr: 18
+      max_cost_base: 32
+      max_cost_incr: 28
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+multi_shot:
+  enabled: true
+  display_name: "&7Multi Shot"
+  description: "&7Fires multiple arrows at once"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 15
+    conflicts_with: []
+    supported:
+      - bow
+      - crossbow
+    primary:
+      - bow
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 13
+      min_cost_incr: 15
+      max_cost_base: 26
+      max_cost_incr: 24
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+poison_arrow:
+  enabled: true
+  display_name: "&7Poison Arrow"
+  description: "&7Arrows poison enemies on hit"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 12
+    conflicts_with: []
+    supported:
+      - bow
+      - crossbow
+    primary:
+      - bow
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 8
+      min_cost_incr: 10
+      max_cost_base: 18
+      max_cost_incr: 16
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+# ============================================
+# TRIDENT/FISHING ROD ENCHANTS (5)
+# ============================================
+
+riptide_plus:
+  enabled: true
+  display_name: "&6Riptide+"
+  description: "&7Enhanced trident launch and water damage"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 16
+    conflicts_with: []
+    supported:
+      - trident
+    primary:
+      - trident
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 14
+      min_cost_incr: 16
+      max_cost_base: 28
+      max_cost_incr: 26
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+aqua_strike:
+  enabled: true
+  display_name: "&7Aqua Strike"
+  description: "&7Trident deals extra damage in water"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 14
+    conflicts_with: []
+    supported:
+      - trident
+    primary:
+      - trident
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 12
+      min_cost_incr: 14
+      max_cost_base: 24
+      max_cost_incr: 22
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+lucky_catch:
+  enabled: true
+  display_name: "&7Lucky Catch"
+  description: "&7Better loot from fishing"
+  definition:
+    max_level: 5
+    needs_permission: false
+    anvil_cost: 10
+    conflicts_with: []
+    supported:
+      - fishing_rod
+    primary:
+      - fishing_rod
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 15
+      min_cost_base: 4
+      min_cost_incr: 8
+      max_cost_base: 12
+      max_cost_incr: 12
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+fast_fish:
+  enabled: true
+  display_name: "&7Fast Fish"
+  description: "&7Significantly reduces fishing time"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 9
+    conflicts_with: []
+    supported:
+      - fishing_rod
+    primary:
+      - fishing_rod
+    tags:
+      in_enchanting_table: true
+      treasure: false
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 18
+      min_cost_base: 3
+      min_cost_incr: 7
+      max_cost_base: 10
+      max_cost_incr: 11
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0
+
+treasure_hunter:
+  enabled: true
+  display_name: "&6Treasure Hunter"
+  description: "&7Extreme chance for rare fishing loot"
+  definition:
+    max_level: 3
+    needs_permission: false
+    anvil_cost: 20
+    conflicts_with: []
+    supported:
+      - fishing_rod
+    primary:
+      - fishing_rod
+    tags:
+      in_enchanting_table: true
+      treasure: true
+      tradeable: true
+      cursed: false
+    enchanting_table:
+      weight: 1
+      min_cost_base: 18
+      min_cost_incr: 18
+      max_cost_base: 36
+      max_cost_incr: 28
+    destroy_item_chance: 0.0
+    remove_enchantment_chance: 0.0

@@ -1,0 +1,15 @@
+load: STARTUP
+name: PandoraEnchants
+version: '1.0.0'
+main: com.pandora.enchants.PandoraEnchants
+api-version: 1.21
+authors: [ Pandora ]
+description: Custom enchant plugin for factions servers - One enchant per item
+
+commands:
+  pandoraenchant:
+    aliases: [ pe, pechant ]
+    description: Main command for PandoraEnchants
+    usage: /<command> [add|remove|info|reload|editor]
+    permission: pandoraenchants.admin
+

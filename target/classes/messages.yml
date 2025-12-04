@@ -1,0 +1,16 @@
+# PandoraEnchants Messages
+# Use &7 for normal text, &e for special, &6 for values, &c for errors
+
+prefix: "&e&lPandora &8» &r"
+error_prefix: "&c"
+
+commands:
+  no_permission: "&cYou don't have permission to use this command!"
+  player_only: "&cThis command can only be used by players!"
+  invalid_enchant: "&cEnchantment '%enchant%' not found!"
+  enchant_applied: "&7Added &6%enchant% &7to your item!"
+  enchant_removed: "&7Removed custom enchant from your item!"
+  already_has_enchant: "&cThis item already has a custom enchant! One enchant per item only."
+  no_item: "&cYou must hold an item in your hand!"
+  reloaded: "&7Reloaded all enchantments!"
+

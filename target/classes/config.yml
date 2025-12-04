@@ -1,0 +1,267 @@
+# ============================================
+# PandoraEnchants Configuration
+# Custom enchant plugin for factions servers
+# One enchant per item restriction enforced
+# ============================================
+
+# Enable verbose debug logging (shows detailed debug messages in console)
+verbose: false
+
+# Allow unsafe enchantments (not recommended - can cause issues)
+allow_unsafe_enchantments: false
+
+# Player idle trigger check frequency in seconds
+# Lower = more frequent checks (more accurate but more server load)
+player_idle_trigger_check_frequency: 0.5
+
+# ============================================
+# ENCHANT TABLE SETTINGS
+# ============================================
+enchant_table:
+  # Enable/disable custom enchantments from enchant table
+  enabled: true
+  
+  # Base chance percentage to get a custom enchant (0.0-100.0)
+  # This is multiplied by enchant weight for final chance
+  base_chance: 15.0
+  
+  # Minimum enchant level required in table to roll custom enchant
+  # Set to 0 to allow any level, or higher for rare-only
+  minimum_level_required: 0
+  
+  # Maximum custom enchant level from table (1 = always level 1, 0 = use max level)
+  # Set to 0 to allow max level, or specific number to cap it
+  max_level_from_table: 0
+  
+  # Whether to replace vanilla enchantments with custom ones
+  # false = custom enchants are added alongside vanilla
+  # true = custom enchants can replace vanilla enchants
+  replace_vanilla: false
+  
+  # Per-item-type chance multipliers (percentage)
+  # Useful for making certain items more/less likely to get enchants
+  item_multipliers:
+    weapon: 100.0      # 100% = normal chance
+    armor: 100.0
+    tool: 80.0        # 80% = slightly rarer
+    bow: 120.0        # 120% = more common
+    book: 150.0       # 150% = much more common
+
+# ============================================
+# ANVIL SETTINGS
+# ============================================
+anvil:
+  # Enable/disable custom enchant merging at anvil
+  enabled: true
+  
+  # Whether to allow upgrading custom enchant levels at anvil
+  allow_level_upgrade: true
+  
+  # Maximum anvil uses for custom enchanted items (0 = no limit)
+  max_uses: 0
+  
+  # Cost multiplier for anvil operations with custom enchants
+  # 1.0 = normal cost, 1.5 = 50% more expensive, etc.
+  cost_multiplier: 1.0
+
+# ============================================
+# ONE ENCHANT PER ITEM ENFORCEMENT
+# ============================================
+one_enchant_rule:
+  # Strictly enforce one enchant per item
+  # If false, multiple enchants could theoretically stack (not recommended)
+  enabled: true
+  
+  # What happens when player tries to add second enchant:
+  # "block" = prevent and show message
+  # "replace" = remove old enchant and add new one
+  # "merge" = try to merge if same enchant (upgrade level)
+  on_second_enchant: "block"
+  
+  # Message to show when trying to add second enchant (if on_second_enchant is "block")
+  # Use %old% for old enchant name, %new% for new enchant name
+  conflict_message: "&cThis item already has &6%old%&c! One enchant per item only."
+
+# ============================================
+# COMMAND SETTINGS
+# ============================================
+commands:
+  # Permission node for all commands
+  permission_base: "pandoraenchants"
+  
+  # Whether to require permission for /pe list
+  require_permission_for_list: false
+  
+  # Whether to require permission for /pe info
+  require_permission_for_info: false
+  
+  # Allow players to remove their own enchants
+  allow_self_remove: false
+
+# ============================================
+# ITEM RESTRICTIONS
+# ============================================
+item_restrictions:
+  # List of materials that CANNOT have custom enchants
+  # Format: Material name (e.g., STICK, DIAMOND_SWORD)
+  blacklisted_materials: []
+  
+  # List of materials that CAN have custom enchants (overrides blacklist)
+  # Leave empty to allow all (except blacklisted)
+  whitelisted_materials: []
+  
+  # Whether to check item names/lore for restrictions
+  # Useful for plugin integration (e.g., disallow enchants on special items)
+  check_custom_names: false
+  blacklisted_name_keywords: []
+  whitelisted_name_keywords: []
+
+# ============================================
+# WORLD & REGION SETTINGS
+# ============================================
+world_settings:
+  # Worlds where custom enchants are disabled
+  disabled_worlds: []
+  
+  # Worlds where custom enchants are enabled (empty = all worlds)
+  enabled_worlds: []
+  
+  # Whether to check WorldGuard regions (requires WorldGuard plugin)
+  use_worldguard_regions: false
+  
+  # WorldGuard regions where custom enchants are disabled
+  disabled_regions: []
+  
+  # WorldGuard regions where custom enchants are enabled (empty = all regions)
+  enabled_regions: []
+
+# ============================================
+# PERFORMANCE SETTINGS
+# ============================================
+performance:
+  # Cache enchantment lookups for better performance
+  cache_enchantments: true
+  
+  # Cache duration in seconds (0 = infinite cache until reload)
+  cache_duration: 0
+  
+  # Async loading of enchantments (faster startup)
+  async_load: true
+
+# ============================================
+# MESSAGING SETTINGS
+# ============================================
+messaging:
+  # Message prefix (can be overridden per-message in messages.yml)
+  prefix: "&e&lPandora &8» &r"
+  
+  # Enable action bar messages for enchant applications
+  use_action_bar: true
+  
+  # Enable title messages for rare enchantments
+  use_titles: false
+  
+  # Title duration in ticks (20 ticks = 1 second)
+  title_duration: 60
+  
+  # Play sound when enchant is applied (format: sound_name:volume:pitch)
+  # Example: "ENTITY_PLAYER_LEVELUP:1.0:1.2"
+  enchant_sound: "ENTITY_PLAYER_LEVELUP:1.0:1.2"
+  
+  # Play sound when enchant is removed
+  remove_sound: ""
+
+# ============================================
+# RARITY SYSTEM
+# ============================================
+rarity:
+  # Enable rarity tiers for enchants
+  enabled: true
+  
+  # Rarity display format
+  # Use %rarity% for rarity name, %color% for rarity color
+  display_format: "&7[%rarity%&7]"
+  
+  # Rarity definitions (weight ranges)
+  # Lower weight = rarer
+  tiers:
+    common:
+      min_weight: 50
+      max_weight: 999
+      color: "&7"
+      display_name: "&7Common"
+    uncommon:
+      min_weight: 30
+      max_weight: 49
+      color: "&a"
+      display_name: "&aUncommon"
+    rare:
+      min_weight: 15
+      max_weight: 29
+      color: "&b"
+      display_name: "&bRare"
+    epic:
+      min_weight: 8
+      max_weight: 14
+      color: "&d"
+      display_name: "&dEpic"
+    legendary:
+      min_weight: 1
+      max_weight: 7
+      color: "&6"
+      display_name: "&6&lLegendary"
+
+# ============================================
+# INTEGRATION SETTINGS
+# ============================================
+integrations:
+  # PlaceholderAPI integration
+  placeholderapi:
+    enabled: true
+    # Placeholder format: %pandoraenchants_enchant_level_<enchant>_<player>%
+  
+  # Vault integration for economy features (future)
+  vault:
+    enabled: false
+  
+  # MythicMobs integration (future)
+  mythicmobs:
+    enabled: false
+
+# ============================================
+# LOGGING & STATISTICS
+# ============================================
+logging:
+  # Log enchant applications to console
+  log_applications: false
+  
+  # Log enchant removals to console
+  log_removals: false
+  
+  # Log enchant table rolls to console
+  log_table_rolls: false
+  
+  # Track statistics (enchant usage, etc.)
+  track_statistics: true
+  
+  # Statistics file location (relative to plugin folder)
+  statistics_file: "statistics.yml"
+
+# ============================================
+# ADVANCED SETTINGS
+# ============================================
+advanced:
+  # Whether to use NMS for enchantment registration (recommended: true)
+  use_nms: true
+  
+  # Allow enchantments on enchanted books
+  allow_on_books: true
+  
+  # Whether custom enchants conflict with vanilla enchants
+  conflict_with_vanilla: false
+  
+  # Update check on startup
+  check_updates: false
+  
+  # Experimental features (use at your own risk)
+  experimental_features: false
