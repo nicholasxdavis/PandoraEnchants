@@ -1,6 +1,7 @@
 package com.pandora.enchants.util;
 
 import com.pandora.enchants.engine.PandoraEnchant;
+import com.pandora.enchants.engine.PandoraEnchantManager;
 import com.pandora.enchants.PandoraEnchants;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -20,22 +21,41 @@ public class EnchantmentStorage {
      * Gets the custom enchant on an item from lore
      */
     public static PandoraEnchant getEnchant(ItemStack item) {
-        if (item == null || !item.hasItemMeta()) return null;
+        if (item == null) {
+            Logger.debug("EnchantmentStorage.getEnchant: Item is null");
+            return null;
+        }
+        
+        if (!item.hasItemMeta()) {
+            Logger.debug("EnchantmentStorage.getEnchant: Item has no meta - " + item.getType());
+            return null;
+        }
         
         ItemMeta meta = item.getItemMeta();
-        if (meta == null || !meta.hasLore()) return null;
+        if (meta == null || !meta.hasLore()) {
+            Logger.debug("EnchantmentStorage.getEnchant: Item has no lore - " + item.getType());
+            return null;
+        }
         
         List<String> lore = meta.getLore();
-        if (lore == null) return null;
+        if (lore == null) {
+            Logger.debug("EnchantmentStorage.getEnchant: Lore is null");
+            return null;
+        }
+        
+        Logger.debug("EnchantmentStorage.getEnchant: Checking " + lore.size() + " lore lines for " + item.getType());
         
         for (String line : lore) {
             String stripped = ChatColor.stripColor(line);
+            Logger.debug("  -> Checking lore line: '" + stripped + "'");
             PandoraEnchant enchant = parseEnchantFromLore(stripped);
             if (enchant != null) {
+                Logger.debug("  -> Found enchant: " + enchant.getNamespacedName());
                 return enchant;
             }
         }
         
+        Logger.debug("EnchantmentStorage.getEnchant: No enchant found in lore for " + item.getType());
         return null;
     }
     
@@ -83,18 +103,48 @@ public class EnchantmentStorage {
             lore = new ArrayList<>(lore);
         }
         
-        // Remove existing custom enchant lore
-        lore.removeIf(line -> {
-            String stripped = ChatColor.stripColor(line);
-            return parseEnchantFromLore(stripped) != null;
-        });
+        // Check if this is a godset item (allows multiple enchants)
+        boolean isGodset = com.pandora.enchants.util.GodSetManager.isGodsetItem(item);
+        
+        if (!isGodset) {
+            // Remove existing custom enchant lore (one-enchant rule)
+            lore.removeIf(line -> {
+                String stripped = ChatColor.stripColor(line);
+                return parseEnchantFromLore(stripped) != null;
+            });
+        } else {
+            // For godset items, only remove if the same enchant already exists (upgrade)
+            String enchantName = enchant.getName();
+            lore.removeIf(line -> {
+                String stripped = ChatColor.stripColor(line);
+                PandoraEnchant existing = parseEnchantFromLore(stripped);
+                return existing != null && existing.getNamespacedName().equals(enchant.getNamespacedName());
+            });
+        }
         
         // Add new enchant lore
         String enchantLore = ColorUtil.colorize("&7" + enchant.getName());
         if (enchant.getMaxLevel() > 1) {
             enchantLore += " " + PandoraEnchant.getLevelRoman(level);
         }
-        lore.add(0, enchantLore); // Add at top
+        
+        if (isGodset) {
+            // For godset items, find the "Enchantments:" line and add after it
+            int insertIndex = -1;
+            for (int i = 0; i < lore.size(); i++) {
+                if (lore.get(i).contains("Enchantments:")) {
+                    insertIndex = i + 1;
+                    break;
+                }
+            }
+            if (insertIndex >= 0) {
+                lore.add(insertIndex, enchantLore);
+            } else {
+                lore.add(enchantLore);
+            }
+        } else {
+            lore.add(0, enchantLore); // Add at top for normal items
+        }
         
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -140,6 +190,76 @@ public class EnchantmentStorage {
     }
     
     /**
+     * Checks if item has a specific enchant by namespaced name
+     */
+    public static boolean hasEnchant(ItemStack item, String namespacedName) {
+        if (item == null || !item.hasItemMeta() || namespacedName == null) return false;
+        
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasLore()) return false;
+        
+        List<String> lore = meta.getLore();
+        if (lore == null) return false;
+        
+        for (String line : lore) {
+            String stripped = ChatColor.stripColor(line);
+            PandoraEnchant enchant = parseEnchantFromLore(stripped);
+            if (enchant != null && enchant.getNamespacedName().equalsIgnoreCase(namespacedName)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Gets a specific enchant from an item by namespaced name
+     */
+    public static PandoraEnchant getEnchant(ItemStack item, String namespacedName) {
+        if (item == null || !item.hasItemMeta() || namespacedName == null) return null;
+        
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasLore()) return null;
+        
+        List<String> lore = meta.getLore();
+        if (lore == null) return null;
+        
+        for (String line : lore) {
+            String stripped = ChatColor.stripColor(line);
+            PandoraEnchant enchant = parseEnchantFromLore(stripped);
+            if (enchant != null && enchant.getNamespacedName().equalsIgnoreCase(namespacedName)) {
+                return enchant;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Gets all enchants from an item
+     */
+    public static List<PandoraEnchant> getAllEnchants(ItemStack item) {
+        List<PandoraEnchant> enchants = new ArrayList<>();
+        if (item == null || !item.hasItemMeta()) return enchants;
+        
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasLore()) return enchants;
+        
+        List<String> lore = meta.getLore();
+        if (lore == null) return enchants;
+        
+        for (String line : lore) {
+            String stripped = ChatColor.stripColor(line);
+            PandoraEnchant enchant = parseEnchantFromLore(stripped);
+            if (enchant != null) {
+                enchants.add(enchant);
+            }
+        }
+        
+        return enchants;
+    }
+    
+    /**
      * Parses enchant from lore line
      */
     private static PandoraEnchant parseEnchantFromLore(String loreLine) {
@@ -175,25 +295,61 @@ public class EnchantmentStorage {
         if (enchantName.isEmpty()) return null;
         
         // Try to find enchant by name (case-insensitive)
-        for (PandoraEnchant enchant : PandoraEnchants.getInstance().getEnchantManager().getAllEnchantments()) {
-            // Direct match
-            if (enchant.getName().equalsIgnoreCase(enchantName) || 
-                enchant.getNamespacedName().equalsIgnoreCase(enchantName.replace(" ", "_"))) {
+        PandoraEnchantManager manager = PandoraEnchants.getInstance().getEnchantManager();
+        if (manager == null) {
+            Logger.debug("parseEnchantFromLore: EnchantManager is null!");
+            return null;
+        }
+        
+        Collection<PandoraEnchant> allEnchants = manager.getAllEnchantments();
+        Logger.debug("parseEnchantFromLore: Checking " + allEnchants.size() + " enchants for name: '" + enchantName + "'");
+        
+        // Normalize the enchant name for matching
+        String normalizedEnchantName = enchantName.toLowerCase().replaceAll(" ", "_").replaceAll("-", "_");
+        
+        for (PandoraEnchant enchant : allEnchants) {
+            if (enchant == null) continue;
+            
+            String enchantDisplayName = enchant.getName().toLowerCase();
+            String enchantNamespaced = enchant.getNamespacedName().toLowerCase();
+            String normalizedInput = enchantName.toLowerCase();
+            
+            // Direct match on display name
+            if (enchantDisplayName.equals(normalizedInput)) {
+                Logger.debug("  -> Display name match: " + enchant.getNamespacedName());
                 return enchant;
             }
             
-            // Match against display name or formatted name
-            String namespaced = enchantName.toLowerCase().replaceAll(" ", "_");
-            if (enchant.getNamespacedName().equalsIgnoreCase(namespaced)) {
+            // Match against namespaced name
+            if (enchantNamespaced.equals(normalizedEnchantName)) {
+                Logger.debug("  -> Namespaced match: " + enchant.getNamespacedName());
                 return enchant;
             }
             
-            // Check if cleaned line starts with enchant name
-            if (cleaned.toLowerCase().startsWith(enchant.getName().toLowerCase())) {
+            // Match display name with spaces converted
+            if (enchantDisplayName.replace(" ", "_").equals(normalizedEnchantName)) {
+                Logger.debug("  -> Converted display match: " + enchant.getNamespacedName());
+                return enchant;
+            }
+            
+            // Check if input starts with enchant display name (for cases with roman numerals)
+            if (normalizedInput.startsWith(enchantDisplayName) || 
+                normalizedInput.startsWith(enchantNamespaced)) {
+                Logger.debug("  -> Starts with match: " + enchant.getNamespacedName());
+                return enchant;
+            }
+            
+            // Check if enchant name is contained in input (fuzzy match)
+            if (normalizedInput.contains(enchantDisplayName) || 
+                normalizedInput.contains(enchantNamespaced) ||
+                enchantDisplayName.contains(normalizedInput) ||
+                enchantNamespaced.contains(normalizedEnchantName)) {
+                Logger.debug("  -> Contains match: " + enchant.getNamespacedName());
                 return enchant;
             }
         }
         
+        Logger.debug("parseEnchantFromLore: No match found for: '" + enchantName + "'");
         return null;
     }
     

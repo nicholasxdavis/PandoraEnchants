@@ -5,7 +5,7 @@
 # ============================================
 
 # Enable verbose debug logging (shows detailed debug messages in console)
-verbose: false
+verbose: true
 
 # Allow unsafe enchantments (not recommended - can cause issues)
 allow_unsafe_enchantments: false

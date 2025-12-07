@@ -79,8 +79,6 @@ public class EnchantEditGUI extends GUI {
         setItem(23, createItem(Material.BOOK, "&6&lView Triggers", 
                 "&7View trigger configuration"));
         
-        setItem(25, createItem(Material.REDSTONE, "&6&lTest Enchant", 
-                "&7Test enchant on held item"));
         
         setItem(40, createItem(Material.LIME_CONCRETE, "&a&lSave Changes", 
                 "&7Save modifications"));
@@ -109,9 +107,6 @@ public class EnchantEditGUI extends GUI {
             case 23:
                 player.sendMessage(ColorUtil.format("&7Trigger viewer coming soon!"));
                 break;
-            case 25:
-                testEnchant();
-                break;
             case 40:
                 player.sendMessage(ColorUtil.format("&7Save functionality coming soon!"));
                 break;
@@ -126,18 +121,5 @@ public class EnchantEditGUI extends GUI {
         player.sendMessage(ColorUtil.text("Config viewer coming soon!"));
     }
     
-    private void testEnchant() {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item == null || item.getType() == Material.AIR) {
-            player.sendMessage(ColorUtil.error("Hold an item in your hand!"));
-            return;
-        }
-        
-        // Apply enchant for testing using lore-based storage
-        com.pandora.enchants.util.EnchantmentStorage.applyEnchant(item, enchant, 1);
-        player.sendMessage(ColorUtil.format("&aApplied " + enchant.getName() + " to your item!"));
-        player.playSound(player.getLocation(), 
-                org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-    }
 }
 

@@ -34,6 +34,11 @@ public class ItemUtil {
             return false;
         }
         
+        // GODSET ITEMS: Allow multiple enchants (bypass one-enchant rule)
+        if (com.pandora.enchants.util.GodSetManager.isGodsetItem(item)) {
+            return true; // Godset items can have unlimited custom enchants
+        }
+        
         // Check if item already has ANY custom enchant
         // This enforces the one-enchant-per-item rule
         if (!ConfigManager.isOneEnchantRuleEnabled()) {

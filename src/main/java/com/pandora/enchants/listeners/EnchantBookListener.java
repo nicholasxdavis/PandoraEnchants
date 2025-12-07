@@ -55,9 +55,19 @@ public class EnchantBookListener implements Listener {
         }
         
         // Check if item can have this enchant
-        if (!ItemUtil.canApplyCustomEnchant(targetItem)) {
+        // Godset items can have multiple enchants, so bypass the check for them
+        boolean isGodset = com.pandora.enchants.util.GodSetManager.isGodsetItem(targetItem);
+        if (!isGodset && !ItemUtil.canApplyCustomEnchant(targetItem)) {
             player.sendMessage(ColorUtil.error("This item already has a custom enchant! One enchant per item only."));
             return;
+        }
+        
+        // For godset items, check if this specific enchant already exists (to upgrade it)
+        if (isGodset) {
+            PandoraEnchant existingEnchant = EnchantmentStorage.getEnchant(targetItem);
+            if (existingEnchant != null && existingEnchant.getNamespacedName().equals(enchant.getNamespacedName())) {
+                // Same enchant, will upgrade level
+            }
         }
         
         // Check if item type is supported

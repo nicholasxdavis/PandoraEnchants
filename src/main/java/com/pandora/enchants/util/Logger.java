@@ -23,9 +23,8 @@ public class Logger {
     }
     
     public static void debug(String message) {
-        if (PandoraEnchants.getInstance().getConfig().getBoolean("verbose", false)) {
-            Bukkit.getLogger().info("[PandoraEnchants-DEBUG] " + message);
-        }
+        Bukkit.getLogger().info("[PandoraEnchants-DEBUG] " + message);
     }
 }
+
 

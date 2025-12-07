@@ -60,6 +60,10 @@ public class PandoraEnchantCommand implements CommandExecutor, TabCompleter {
             case "editor":
             case "edit":
                 return handleEditor(sender);
+            case "godset":
+                return handleGodSet(sender, args);
+            case "godkit":
+                return handleGodKit(sender, args);
             default:
                 sendHelp(sender);
                 return true;
@@ -488,6 +492,119 @@ public class PandoraEnchantCommand implements CommandExecutor, TabCompleter {
         return true;
     }
     
+    private boolean handleGodSet(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(ColorUtil.error("Usage: /pe godset <iron|diamond|netherite>"));
+            return true;
+        }
+        
+        String tier = args[1].toLowerCase();
+        if (!tier.equals("iron") && !tier.equals("diamond") && !tier.equals("netherite")) {
+            sender.sendMessage(ColorUtil.error("Invalid tier! Use: iron, diamond, or netherite"));
+            return true;
+        }
+        
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ColorUtil.error("This command can only be used by players!"));
+            return true;
+        }
+        
+        Player player = (Player) sender;
+        com.pandora.enchants.util.GodSetManager.GodSet godSet = 
+                com.pandora.enchants.util.GodSetManager.createGodSet(tier);
+        
+        if (godSet == null) {
+            sender.sendMessage(ColorUtil.error("Failed to create godset!"));
+            return true;
+        }
+        
+        // Give items to player
+        player.getInventory().addItem(godSet.helmet);
+        player.getInventory().addItem(godSet.chestplate);
+        player.getInventory().addItem(godSet.leggings);
+        player.getInventory().addItem(godSet.boots);
+        player.getInventory().addItem(godSet.sword);
+        player.getInventory().addItem(godSet.bow);
+        
+        // Play sound
+        player.playSound(player.getLocation(), 
+                org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 0.5f);
+        
+        sender.sendMessage(ColorUtil.format(
+                ColorUtil.text("Received ") + ColorUtil.highlight(tier.toUpperCase() + " Godset") + 
+                ColorUtil.text("! This set allows multiple custom enchants!")
+        ));
+        
+        return true;
+    }
+    
+    private boolean handleGodKit(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            sender.sendMessage(ColorUtil.error("Usage: /pe godkit give <player> <iron|diamond|netherite>"));
+            return true;
+        }
+        
+        if (!args[1].equalsIgnoreCase("give")) {
+            sender.sendMessage(ColorUtil.error("Usage: /pe godkit give <player> <iron|diamond|netherite>"));
+            return true;
+        }
+        
+        String playerName = args[2];
+        Player target = org.bukkit.Bukkit.getPlayer(playerName);
+        
+        if (target == null) {
+            sender.sendMessage(ColorUtil.error("Player '" + ColorUtil.highlight(playerName) + "' not found!"));
+            return true;
+        }
+        
+        if (args.length < 4) {
+            sender.sendMessage(ColorUtil.error("Usage: /pe godkit give <player> <iron|diamond|netherite>"));
+            return true;
+        }
+        
+        String tier = args[3].toLowerCase();
+        if (!tier.equals("iron") && !tier.equals("diamond") && !tier.equals("netherite")) {
+            sender.sendMessage(ColorUtil.error("Invalid tier! Use: iron, diamond, or netherite"));
+            return true;
+        }
+        
+        com.pandora.enchants.util.GodSetManager.GodSet godSet = 
+                com.pandora.enchants.util.GodSetManager.createGodSet(tier);
+        
+        if (godSet == null) {
+            sender.sendMessage(ColorUtil.error("Failed to create godset!"));
+            return true;
+        }
+        
+        // Give items to target player
+        target.getInventory().addItem(godSet.helmet);
+        target.getInventory().addItem(godSet.chestplate);
+        target.getInventory().addItem(godSet.leggings);
+        target.getInventory().addItem(godSet.boots);
+        target.getInventory().addItem(godSet.sword);
+        target.getInventory().addItem(godSet.bow);
+        
+        // Play sound
+        target.playSound(target.getLocation(), 
+                org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 0.5f);
+        
+        target.sendMessage(ColorUtil.format(
+                ColorUtil.text("Received ") + ColorUtil.highlight(tier.toUpperCase() + " Godset") + 
+                ColorUtil.text("! This set allows multiple custom enchants!")
+        ));
+        
+        if (sender != target) {
+            sender.sendMessage(ColorUtil.format(
+                    ColorUtil.text("Gave ") + ColorUtil.highlight(target.getName()) + 
+                    ColorUtil.text(" a ") + ColorUtil.highlight(tier.toUpperCase() + " Godset") + 
+                    ColorUtil.text("!")
+            ));
+        }
+        
+        return true;
+    }
+    
+    
     private void sendHelp(CommandSender sender) {
         List<String> helpLines = new ArrayList<>();
         helpLines.add(ColorUtil.header("=== PandoraEnchants Commands ==="));
@@ -500,6 +617,8 @@ public class PandoraEnchantCommand implements CommandExecutor, TabCompleter {
         helpLines.add(ColorUtil.text("/pe editor") + " - &e&lOpen Live Preview Enchant Editor");
         helpLines.add(ColorUtil.text("/pe book <enchant> [level] [player]") + " - Spawn enchant book");
         helpLines.add(ColorUtil.text("/pe book list [page]") + " - List all enchantments for books");
+        helpLines.add(ColorUtil.text("/pe godset <iron|diamond|netherite>") + " - &6&lSpawn godset (multiple enchants!)");
+        helpLines.add(ColorUtil.text("/pe godkit give <player> <tier>") + " - &6&lGive godset to player");
         
         // Send in pages if needed
         int itemsPerPage = 10;
@@ -518,10 +637,36 @@ public class PandoraEnchantCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            List<String> completions = new ArrayList<>(Arrays.asList("add", "remove", "info", "list", "reload", "editor", "edit", "book", "givebook"));
+            List<String> completions = new ArrayList<>(Arrays.asList("add", "remove", "info", "list", "reload", "editor", "edit", "book", "givebook", "godset", "godkit"));
             String input = args[0].toLowerCase();
             completions.removeIf(s -> !s.toLowerCase().startsWith(input));
             return completions;
+        }
+        
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("godset")) {
+                return Arrays.asList("iron", "diamond", "netherite");
+            }
+            if (args[0].equalsIgnoreCase("godkit")) {
+                return Arrays.asList("give");
+            }
+        }
+        
+        if (args.length == 3) {
+            if (args[0].equalsIgnoreCase("godkit") && args[1].equalsIgnoreCase("give")) {
+                // Return online player names
+                List<String> players = new ArrayList<>();
+                for (Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
+                    players.add(p.getName());
+                }
+                return players;
+            }
+        }
+        
+        if (args.length == 4) {
+            if (args[0].equalsIgnoreCase("godkit") && args[1].equalsIgnoreCase("give")) {
+                return Arrays.asList("iron", "diamond", "netherite");
+            }
         }
         
         if (args.length == 2) {
