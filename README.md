@@ -5,7 +5,7 @@ PandoraEnchants 1.0.0
 
 <a href="#"> <img src="https://img.shields.io/badge/Version-1.0.0-skyblue?style=for-the-badge" alt="Current Version"> </a>
 
-<br /><hr />
+<hr />
 
 About PandoraEnchants
 
