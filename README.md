@@ -88,8 +88,5 @@ This plugin  is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 <td style="text-align: center;">
 
-Support & Links
-
-Report Bugs • View Source
 
 </td>
