@@ -1,11 +1,5 @@
 <td style="text-align: center;">
-
-<img src="https://nicholasxdavis.github.io/BN-db1/img/PhotoshopExtension_Image.png" width="600" height="300" alt="PandoraEnchants Banner" />
-
 PandoraEnchants 1.0.0
-
-PandoraPlugins by Blacnova
-
 <br />
 
 <a href="#"> <img src="https://img.shields.io/badge/Version-1.0.0-skyblue?style=for-the-badge" alt="Current Version"> </a>
